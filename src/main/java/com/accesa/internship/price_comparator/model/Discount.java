@@ -9,16 +9,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "product")
+@Entity(name="discount")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class Product {
+@AllArgsConstructor
+ public class Discount {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
-
     private String product_id;
     private String product_name;
     private String product_category;
@@ -27,6 +26,9 @@ public class Product {
     private String package_unit;
     private Double price;
     private String currency;
+    private String to_date;
+    private String from_date;
     private String store;
     private String data;
+    private Double percentageOfDiscount;
 }
