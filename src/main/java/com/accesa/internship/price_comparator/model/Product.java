@@ -1,13 +1,12 @@
 package com.accesa.internship.price_comparator.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Entity(name = "product")
 @Getter
@@ -19,14 +18,23 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String product_id;
-    private String product_name;
-    private String product_category;
+    private String productName;
+
+    private String productCategory;
+
     private String brand;
-    private Double package_quantity;
-    private String package_unit;
+
+    private Double packageQuantity;
+
+    private String packageUnit;
+
     private Double price;
+
     private String currency;
+
     private String store;
-    private String data;
+
+    @Column(name = "created_at", updatable = false)
+    @org.hibernate.annotations.CreationTimestamp
+    private LocalDateTime createdAt;
 }
