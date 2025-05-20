@@ -34,6 +34,8 @@ public class Product {
 
     private String store;
 
+    private Double pricePerUnit;
+
     @Column(name = "created_at", updatable = false)
     @org.hibernate.annotations.CreationTimestamp
     private LocalDateTime createdAt;

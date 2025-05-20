@@ -15,4 +15,7 @@ public interface DiscountRepository extends JpaRepository<Discount,Long> {
     List<Discount> findBestDiscounts(@Param("date") LocalDate date, @Param("limit") int limit);
 
     List<Discount> findByCreatedAtAfter(LocalDateTime timestamp);
+
+    @Query("SELECT d FROM discount d WHERE :date BETWEEN d.fromDate AND d.toDate AND d.productName IN :names")
+    List<Discount> findByDateAndProductNames(@Param("date") LocalDate date,  @Param("names") List<String> names);
 }

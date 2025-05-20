@@ -1,6 +1,7 @@
 package com.accesa.internship.price_comparator.contoller;
 
 import com.accesa.internship.price_comparator.model.Product;
+import com.accesa.internship.price_comparator.model.ShoppingListBody;
 import com.accesa.internship.price_comparator.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -39,4 +41,13 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
+    @PostMapping("/shopping-list")
+    public ResponseEntity<List<Product>> splitShoppingList(@RequestBody ShoppingListBody requestBody) {
+        LocalDate date = requestBody.getDate();
+        if (date == null) {
+            date = LocalDate.now();
+        }
+        List<Product> products = productService.splitShoppingCart(date, requestBody.getProductNames());
+        return ResponseEntity.ok(products);
+    }
 }

@@ -18,11 +18,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByStoreAndProductName(String store, String productName);
 
+    List<Product> findByProductNameIn(List<String> names);
+
     @Query(value = """
             SELECT *
             FROM (
                 SELECT p.*,
-                       ROW_NUMBER() OVER (PARTITION BY product_name ORDER BY price ASC) as rn
+                       ROW_NUMBER() OVER (PARTITION BY product_name ORDER BY price_per_unit ASC) as rn
                 FROM product p
                 WHERE p.product_name IN (:names)
             ) sub

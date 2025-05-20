@@ -9,8 +9,41 @@ CREATE TABLE product (
      price DECIMAL(10, 2),
      currency VARCHAR(255),
      store VARCHAR(255),
+     price_per_unit DECIMAL(10, 2),
      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+DELIMITER $$
+
+CREATE TRIGGER trg_product_price_per_unit
+BEFORE INSERT ON product
+FOR EACH ROW
+BEGIN
+    DECLARE quantity_standard DECIMAL(10, 6);
+    DECLARE unit_lower VARCHAR(20);
+
+    SET unit_lower = LOWER(NEW.package_unit);
+
+    IF NEW.package_quantity IS NULL OR NEW.price IS NULL OR NEW.package_quantity = 0 THEN
+        SET NEW.price_per_unit = NULL;
+    ELSE
+        CASE unit_lower
+            WHEN 'g' THEN
+                SET quantity_standard = NEW.package_quantity / 1000;
+            WHEN 'ml' THEN
+                SET quantity_standard = NEW.package_quantity / 1000;
+            WHEN 'role' THEN
+                SET quantity_standard = NEW.package_quantity;
+            ELSE
+                SET quantity_standard = NEW.package_quantity;
+        END CASE;
+
+        SET NEW.price_per_unit = ROUND(NEW.price / quantity_standard, 2);
+    END IF;
+END$$
+
+DELIMITER ;
+
 
 -- Insert product records
 INSERT INTO product (product_name, product_category, brand, package_quantity, package_unit, price, currency, store) VALUES

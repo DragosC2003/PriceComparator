@@ -1,18 +1,23 @@
 package com.accesa.internship.price_comparator.service;
 
+import com.accesa.internship.price_comparator.model.Discount;
 import com.accesa.internship.price_comparator.model.Product;
+import com.accesa.internship.price_comparator.model.ProductWithDiscount;
+import com.accesa.internship.price_comparator.repository.DiscountRepository;
 import com.accesa.internship.price_comparator.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-
-import java.util.Collections;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
+    private final DiscountRepository discountRepository;
 
     public List<Product> getProducts() {
         return productRepository.findAll();
@@ -41,6 +46,40 @@ public class ProductService {
     public List<Product> getBestPrices(List<String> productNames) {
         return productRepository.findBestPricesByProductNames(productNames);
     }
+
+    public List<Product> splitShoppingCart(LocalDate date, List<String> productNames) {
+
+        List<Product> products = productRepository.findByProductNameIn(productNames);
+        List<Discount> discounts = discountRepository.findByDateAndProductNames(date, productNames);
+
+        Map<String, ProductWithDiscount> bestProductMap = new HashMap<>();
+
+        for (Product product : products) {
+            Optional<Discount> discount = discounts
+                    .stream()
+                    .filter(d -> d.getProductName().equals(product.getProductName())
+                            && d.getStore().equals(product.getStore()))
+                    .findFirst();
+
+            double effectivePrice = product.getPricePerUnit();
+
+            if (discount.isPresent() && discount.get().getPercentageOfDiscount() != null) {
+                double discountPercent = discount.get().getPercentageOfDiscount() / 100.0;
+                effectivePrice = effectivePrice * (1 - discountPercent);
+            }
+
+            ProductWithDiscount productWithDiscount = new ProductWithDiscount(product, effectivePrice);
+
+            ProductWithDiscount currentBest = bestProductMap.get(product.getProductName());
+
+            if (currentBest == null || effectivePrice < currentBest.getValuePerUnitWithDiscount()) {
+                bestProductMap.put(product.getProductName(), productWithDiscount);
+            }
+        }
+
+        return new ArrayList<>(bestProductMap.values());
+    }
+
 }
 
 
