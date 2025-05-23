@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/discount")
+@RequestMapping("/discounts")
 @RequiredArgsConstructor
 public class DiscountController {
 

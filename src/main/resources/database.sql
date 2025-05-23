@@ -1,4 +1,3 @@
--- Create the product table
 CREATE TABLE product (
      id BIGINT AUTO_INCREMENT PRIMARY KEY,
      product_name VARCHAR(255),
@@ -44,8 +43,6 @@ END$$
 
 DELIMITER ;
 
-
--- Insert product records
 INSERT INTO product (product_name, product_category, brand, package_quantity, package_unit, price, currency, store) VALUES
 ('lapte zuzu', 'lactate', 'Zuzu', 1, 'l', 10.10, 'RON', 'Kaufland'),
 ('iaurt grecesc', 'lactate', 'Olympus', 0.4, 'kg', 11.80, 'RON', 'Kaufland'),
@@ -148,8 +145,6 @@ INSERT INTO discount (
 ('ouă mărimea M', 'Din Ogradă', 10, 'buc', 'ouă', '2025-05-04', '2025-05-10', 6, 'Profi'),
 ('banane', 'Generic', 1, 'kg', 'legume și fructe', '2025-05-01', '2025-05-07', 7, 'Profi');
 
--- similarly, all other INSERTS without product_id:
-
 INSERT INTO discount (
     product_name, brand, package_quantity, package_unit,
     product_category, from_date, to_date, percentage_of_discount, store
@@ -175,8 +170,6 @@ INSERT INTO discount (
 ('iaurt grecesc', 'Lidl', 0.4, 'kg', 'lactate', '2025-05-05', '2025-05-11', 11, 'Lidl'),
 ('roșii cherry', 'Lidl', 250, 'g', 'legume și fructe', '2025-05-06', '2025-05-12', 5, 'Lidl');
 
--- And the last batch:
-
 INSERT INTO discount (
     product_name, brand, package_quantity, package_unit,
     product_category, from_date, to_date, percentage_of_discount, store
@@ -200,3 +193,11 @@ INSERT INTO discount (
 ('banane', 'Kaufland', 1, 'kg', 'legume și fructe', '2025-05-06', '2025-05-12', 9, 'Kaufland'),
 ('iaurt grecesc', 'Kaufland', 0.4, 'kg', 'lactate', '2025-05-05', '2025-05-11', 14, 'Kaufland'),
 ('roșii cherry', 'Kaufland', 250, 'g', 'legume și fructe', '2025-05-06', '2025-05-12', 7, 'Kaufland');
+
+
+CREATE TABLE price_alert (
+                             id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                             product_name VARCHAR(255) NOT NULL,
+                             target_price  DECIMAL(10, 2),
+                             active BIT NOT NULL
+);

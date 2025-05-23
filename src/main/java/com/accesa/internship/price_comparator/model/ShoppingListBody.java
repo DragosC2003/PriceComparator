@@ -1,5 +1,6 @@
 package com.accesa.internship.price_comparator.model;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,5 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ShoppingListBody {
     private LocalDate date;
+
+    @NotEmpty(message = "Product names list cannot be empty")
     private List<String> productNames;
 }

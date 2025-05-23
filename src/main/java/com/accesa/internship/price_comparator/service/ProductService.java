@@ -1,5 +1,6 @@
 package com.accesa.internship.price_comparator.service;
 
+import com.accesa.internship.price_comparator.exception.NotFoundException;
 import com.accesa.internship.price_comparator.model.Discount;
 import com.accesa.internship.price_comparator.model.Product;
 import com.accesa.internship.price_comparator.model.ProductWithDiscount;
@@ -10,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +23,7 @@ public class ProductService {
     }
 
     public Product getProduct(Long id) {
-        return productRepository.findById(id).orElse(null);
+        return productRepository.findById(id).orElseThrow(() -> new NotFoundException("Product " + id + " not found."));
     }
 
     public List<Product> searchProducts(String name, String store) {

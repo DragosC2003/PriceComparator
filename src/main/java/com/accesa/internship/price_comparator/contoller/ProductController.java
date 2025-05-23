@@ -3,6 +3,7 @@ package com.accesa.internship.price_comparator.contoller;
 import com.accesa.internship.price_comparator.model.Product;
 import com.accesa.internship.price_comparator.model.ShoppingListBody;
 import com.accesa.internship.price_comparator.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,7 @@ public class ProductController {
     }
 
     @PostMapping("/shopping-list")
-    public ResponseEntity<List<Product>> splitShoppingList(@RequestBody ShoppingListBody requestBody) {
+    public ResponseEntity<List<Product>> splitShoppingList(@RequestBody @Valid ShoppingListBody requestBody) {
         LocalDate date = requestBody.getDate();
         if (date == null) {
             date = LocalDate.now();
