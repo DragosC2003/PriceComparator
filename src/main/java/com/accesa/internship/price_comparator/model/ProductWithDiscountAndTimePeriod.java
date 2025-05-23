@@ -4,14 +4,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @NoArgsConstructor
 @Getter
 @Setter
-public class ProductWithDiscount extends Product implements Comparable<ProductWithDiscount> {
-    private Double valuePerUnitWithDiscount;
-    private Double valueWithDiscount;
+public class ProductWithDiscountAndTimePeriod extends ProductWithDiscount {
+    private LocalDate fromDate;
+    private LocalDate toDate;
 
-    public ProductWithDiscount(Product product, Double valuePerUnitWithDiscount, Double valueWithDiscount) {
+    public ProductWithDiscountAndTimePeriod(ProductWithDiscount product, LocalDate fromDate, LocalDate toDate) {
         this.setId(product.getId());
         this.setProductName(product.getProductName());
         this.setProductCategory(product.getProductCategory());
@@ -23,12 +25,9 @@ public class ProductWithDiscount extends Product implements Comparable<ProductWi
         this.setStore(product.getStore());
         this.setPricePerUnit(product.getPricePerUnit());
         this.setCreatedAt(product.getCreatedAt());
-        this.valuePerUnitWithDiscount = valuePerUnitWithDiscount;
-        this.valueWithDiscount = valueWithDiscount;
-    }
-
-    @Override
-    public int compareTo(ProductWithDiscount o) {
-        return Double.compare(this.valuePerUnitWithDiscount, o.valuePerUnitWithDiscount);
+        this.setValuePerUnitWithDiscount(product.getValuePerUnitWithDiscount());
+        this.setValueWithDiscount(product.getValueWithDiscount());
+        this.fromDate = fromDate;
+        this.toDate = toDate;
     }
 }

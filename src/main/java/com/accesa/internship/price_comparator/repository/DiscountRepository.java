@@ -18,4 +18,6 @@ public interface DiscountRepository extends JpaRepository<Discount,Long> {
 
     @Query("SELECT d FROM discount d WHERE :date BETWEEN d.fromDate AND d.toDate AND d.productName IN :names")
     List<Discount> findByDateAndProductNames(@Param("date") LocalDate date,  @Param("names") List<String> names);
+
+    List<Discount> findByStoreAndProductNameAndBrandOrderByFromDate(@Param("store") String store, @Param("productName") String productName, @Param("brand") String brand);
 }

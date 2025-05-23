@@ -4,6 +4,7 @@ import com.accesa.internship.price_comparator.model.Product;
 import com.accesa.internship.price_comparator.model.ShoppingListBody;
 import com.accesa.internship.price_comparator.service.ProductService;
 import jakarta.validation.Valid;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
@@ -50,5 +51,29 @@ public class ProductController {
         }
         List<Product> products = productService.splitShoppingCart(date, requestBody.getProductNames());
         return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/price-history")
+    public ResponseEntity<String> priceHistoryGraph(@RequestParam(required = false) String store, @RequestParam(required = false) String productCategory, @RequestParam(required = false) String brand) {
+        int count = 0;
+        if (store != null) count++;
+        if (productCategory != null) count++;
+        if (brand != null) count++;
+
+        if (count == 0) {
+            return ResponseEntity.badRequest().body("At least one parameter must be provided.");
+        }
+
+        if (count > 1) {
+            return ResponseEntity.badRequest().body("Only one parameter can be provided at a time.");
+        }
+
+        if (store != null) {
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(productService.priceHistoryGraphByStore(store));
+        } else if (productCategory != null) {
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(productService.priceHistoryGraphByCategory(productCategory));
+        } else {
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(productService.priceHistoryGraphByBrand(brand));
+        }
     }
 }

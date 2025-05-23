@@ -23,7 +23,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Optional<Product> findFirstByProductName(String productName);
 
+    List<Product> findByProductCategory(String productCategory);
 
+    List<Product> findProductByBrand(String brand);
 
     @Query(value = """
             SELECT *
