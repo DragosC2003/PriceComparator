@@ -45,7 +45,6 @@ END$$
 DELIMITER ;
 
 
--- Insert product records
 INSERT INTO product (product_name, product_category, brand, package_quantity, package_unit, price, currency, store) VALUES
 ('lapte zuzu', 'lactate', 'Zuzu', 1, 'l', 10.10, 'RON', 'Kaufland'),
 ('iaurt grecesc', 'lactate', 'Olympus', 0.4, 'kg', 11.80, 'RON', 'Kaufland'),
